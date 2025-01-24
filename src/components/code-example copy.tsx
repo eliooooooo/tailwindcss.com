@@ -1,5 +1,3 @@
-'use client';
-
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import {
   transformerNotationDiff,
@@ -8,10 +6,13 @@ import {
 } from "@shikijs/transformers";
 import { clsx } from "clsx";
 import dedent from "dedent";
+import { createHighlighter } from "shiki";
 import theme from "./syntax-highlighter/theme.json";
 
-import { highlighter } from "./highlight";
 import { highlightClasses } from "./highlight-classes";
+import atApplyInjection from "./syntax-highlighter/at-apply.json";
+import atRulesInjection from "./syntax-highlighter/at-rules.json";
+import themeFnInjection from "./syntax-highlighter/theme-fn.json";
 
 export function js(strings: TemplateStringsArray, ...args: any[]) {
   return { lang: "js", code: dedent(strings, ...args) };
@@ -231,3 +232,30 @@ function CopyButton({ content }: { content: string }) {
     </button>
   );
 }
+
+const highlighter = await createHighlighter({
+  themes: [theme],
+  langs: [
+    atApplyInjection as any,
+    atRulesInjection,
+    themeFnInjection,
+    "astro",
+    "blade",
+    "css",
+    "edge",
+    "elixir",
+    "hbs",
+    "html",
+    "js",
+    "json",
+    "jsx",
+    "mdx",
+    "sh",
+    "svelte",
+    "ts",
+    "tsx",
+    "twig",
+    "vue",
+    "md",
+  ],
+});
